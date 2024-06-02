@@ -1,44 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class CarMove : MonoBehaviour
 {
-    public Rigidbody2D myRigidbody;
-    private float accel = 2;
+    private Vector3 playerPos;
+    Rigidbody carbody;
     public void Start() {
-        Debug.Log(accel);
+        playerPos = transform.position;
+        carbody.mass = 1;
+        carbody.useGravity = true;
     }
     public void Update(){
-        if (Input.GetKeyDown(KeyCode.UpArrow)){
-            do{Move(5);}while(true);
-        }
-        else if(Input.GetKeyDown(KeyCode.LeftArrow)){
-            Move(3);
-        }
+        Move();
+        Debug.Log("player pos"+playerPos.x+playerPos.y);
     }
-    public void Move(int i){
-        switch(i){
-            case 1:{
-                myRigidbody.velocity = Vector2.up * accel;
-                break;
-            }
-            case 2:{
-                myRigidbody.velocity = Vector2.down * accel;
-                break;
-            }
-            case 3:{
-                myRigidbody.velocity = Vector2.left * accel;
-                break;
-            }
-            case 4:{
-                myRigidbody.velocity = Vector2.right * accel;
-                break;
-            }
-            case 5:{
-                myRigidbody.angularVelocity = 45;
-                break;
-            }
+    void Move(){
+        if(Input.GetKey(KeyCode.UpArrow)){
+            carbody.velocity = Vector2.up;
         }
+        if(Input.GetKey(KeyCode.DownArrow)){
+            carbody.velocity =  Vector2.down;
+        }
+        if(Input.GetKey(KeyCode.LeftArrow)){
+            playerPos -= new Vector3(0.01f,0,0);
+        }
+        if(Input.GetKey(KeyCode.RightArrow)){
+            playerPos += new Vector3(0.01f,0,0);
+        }
+        transform.position = playerPos;
+        carbody.WakeUp();
     }
 }
